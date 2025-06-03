@@ -1,20 +1,33 @@
-let [milliseconds, seconds, minutes, hours] = [0,0,0,0];
-let displayTime = document.getElementById("displayTime");
+let timeDisplay = document.getElementById("displayTime");
+let start = document.getElementById("start");
+let stop = document.getElementById("stop");
+let reset = document.getElementById("reset");
+let [milliseconds, seconds, minutes,  hours] = [0,0,0,0];
 
-let int;
+let init;
 
-document.getElementById("start").addEventListener("click", () => {
-    int = setInterval(generateTimer, 10);
-    
-});
-document.getElementById("stop").addEventListener("click", () =>{
-    clearInterval(int)
+
+start.addEventListener("click",() =>{
+    init = setInterval(generateTimer, 10)
+    start.disabled = true;
 })
-document.getElementById("reset").addEventListener("click", () =>{
-    clearInterval(int);
-    [milliseconds, seconds, minutes, hours] = [0,0,0,0];
-    displayTime.innerHTML = "00 : 00 : 00 : 000"
+
+stop.addEventListener("click", () =>{
+    clearInterval(init);
+    start.disabled = false;
+
 })
+
+reset.addEventListener("click", () =>{
+    start.disabled = false;
+    milliseconds = 0;
+    seconds = 0
+    minutes = 0
+    hours = 0
+    clearInterval(init);
+    timeDisplay.innerHTML = "00 : 00 : 00 : 000"
+})
+
 
 function generateTimer() {
     milliseconds += 10;
@@ -23,21 +36,17 @@ function generateTimer() {
         seconds++;
         if (seconds == 60) {
             seconds = 0;
-            minutes++;
+            minutes++
             if (minutes == 60) {
                 minutes = 0;
-                hours++;
+                hours++
             }
         }
-        
     }
     let h = hours < 10 ? "0" + hours : hours;
     let m = minutes < 10 ? "0" + minutes : minutes;
     let s = seconds < 10 ? "0" + seconds : seconds;
     let ms = milliseconds < 10 ? "00" + milliseconds : milliseconds < 100 ? "0" + milliseconds : milliseconds;
-    
-    displayTime.innerHTML = `${h} : ${m} : ${s} : ${ms}`
-    
+
+    timeDisplay.innerHTML = `${h} : ${m} : ${s} : ${ms}`
 }
-
-
